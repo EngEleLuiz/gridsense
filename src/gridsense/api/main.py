@@ -17,8 +17,6 @@ Interactive docs: http://localhost:8000/docs
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 

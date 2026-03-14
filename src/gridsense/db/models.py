@@ -17,13 +17,11 @@ from sqlalchemy import (
     Index,
     Integer,
     String,
-    Text,
     text,
 )
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import DeclarativeBase
-
 
 # ---------------------------------------------------------------------------
 # Base

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime
 
 from fastapi import APIRouter, HTTPException, Query
 
@@ -30,9 +30,10 @@ async def get_pq_events(
     events: list[PQEventItem] = []
 
     try:
+        from sqlalchemy import select
+
         from gridsense.db.connection import create_db_engine
         from gridsense.db.models import PQEvent
-        from sqlalchemy import select
 
         engine = create_db_engine()
         with engine.connect() as conn:

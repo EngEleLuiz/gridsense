@@ -6,7 +6,6 @@ import pytest
 
 from gridsense.battery.soc import SoCEstimator, _ocv_to_soc, _soc_to_ocv
 
-
 # ---------------------------------------------------------------------------
 # Constructor validation
 # ---------------------------------------------------------------------------

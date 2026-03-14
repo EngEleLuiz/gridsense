@@ -3,10 +3,8 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import List, Optional
 
 from pydantic import BaseModel, Field
-
 
 # ---------------------------------------------------------------------------
 # Shared
@@ -46,7 +44,7 @@ class HourlyForecastItem(BaseModel):
 
 
 class ForecastResponse(BaseModel):
-    predictions: List[HourlyForecastItem]
+    predictions: list[HourlyForecastItem]
     model_version: str
     station_code: str
     generated_at: datetime
@@ -61,11 +59,11 @@ class PQEventItem(BaseModel):
     timestamp: datetime
     label: str
     confidence: float
-    duration_ms: Optional[int] = None
+    duration_ms: int | None = None
 
 
 class PQEventsResponse(BaseModel):
-    events: List[PQEventItem]
+    events: list[PQEventItem]
     total: int
     start: datetime
     end: datetime

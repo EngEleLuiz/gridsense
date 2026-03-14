@@ -17,7 +17,6 @@ transient       — impulsive spike superimposed on the fundamental
 
 from __future__ import annotations
 
-import warnings
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -31,7 +30,6 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 from gridsense.pq.features import DEFAULT_LEVEL, DEFAULT_WAVELET, extract_dwt_features
-
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -218,7 +216,7 @@ class PQClassifier:
         )
 
     @classmethod
-    def load(cls, path: Path = DEFAULT_MODEL_PATH) -> "PQClassifier":
+    def load(cls, path: Path = DEFAULT_MODEL_PATH) -> PQClassifier:
         """Load a pre-trained classifier from a ``.joblib`` artifact.
 
         Parameters

@@ -2,14 +2,12 @@
 
 from __future__ import annotations
 
-import json
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pandas as pd
 import pytest
 
 from gridsense.ingest.weather import INMETClient
-
 
 # ---------------------------------------------------------------------------
 # Fixture: realistic INMET API response

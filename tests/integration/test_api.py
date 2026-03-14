@@ -11,9 +11,8 @@ import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 
-from gridsense.api.main import app
 from gridsense import __version__
-
+from gridsense.api.main import app
 
 # ---------------------------------------------------------------------------
 # Shared async client fixture

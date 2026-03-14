@@ -12,13 +12,12 @@ For tests, point DATABASE_URL at a throwaway ``gridsense_test`` database.
 from __future__ import annotations
 
 import os
+from collections.abc import Generator
 from contextlib import contextmanager
-from typing import Generator
 
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
-
 
 # ---------------------------------------------------------------------------
 # Engine factory

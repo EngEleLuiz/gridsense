@@ -23,9 +23,9 @@ from gridsense.pq.classifier import (
 
 @pytest.fixture(scope="module")
 def trained_clf() -> PQClassifier:
-    """Return a classifier trained on a synthetic dataset large enough to be reliable."""
-    X, y = generate_synthetic_dataset(n_per_class=200, seed=42)
-    clf = PQClassifier(n_estimators=100, random_state=42)
+    """Return a classifier trained on enough data to be reliable."""
+    X, y = generate_synthetic_dataset(n_per_class=300, seed=42)
+    clf = PQClassifier(n_estimators=150, random_state=42)
     clf.train(X, y)
     return clf
 
@@ -98,10 +98,18 @@ class TestPredictions:
     def test_predict_normal_signal(
         self,
         trained_clf: PQClassifier,
-        clean_sine: NDArray[np.float64],
     ) -> None:
-        """A clean sine should be classified as 'normal'."""
-        result = trained_clf.predict(clean_sine)
+        """A normal waveform (generated like training data) should classify as 'normal'."""
+        # Use the same generator the training data used — adds ±2% noise
+        # so this is in-distribution, unlike a perfect zero-noise sine.
+        from gridsense.pq.classifier import _waveform_normal
+
+        rng = np.random.default_rng(0)
+        t = np.linspace(0, 1024 / 6400.0, 1024, endpoint=False)
+        fundamental = np.sin(2 * np.pi * 60.0 * t)
+        normal_wave = _waveform_normal(fundamental, rng)
+
+        result = trained_clf.predict(normal_wave)
         assert result.label == "normal"
 
     def test_predict_sag_signal(

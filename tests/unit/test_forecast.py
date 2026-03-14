@@ -4,13 +4,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 import pytest
 
 from gridsense.forecast.solar import SolarForecaster, engineer_features
 from gridsense.forecast.trainer import generate_training_data, train_and_save
-
 
 # ---------------------------------------------------------------------------
 # Fixtures

@@ -18,7 +18,6 @@ from __future__ import annotations
 import numpy as np
 from numpy.typing import NDArray
 
-
 # ---------------------------------------------------------------------------
 # OCV look-up table (3S Li-Ion pack, nominal 11.1 V)
 # ---------------------------------------------------------------------------

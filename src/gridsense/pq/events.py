@@ -7,9 +7,9 @@ produced by the classifier and querying them by time window or label.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from collections.abc import Iterator
+from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
-from typing import Iterator
 
 from gridsense.pq.classifier import PQResult
 
@@ -29,7 +29,7 @@ class PQEvent:
         cls,
         result: PQResult,
         duration_ms: int | None = None,
-    ) -> "PQEvent":
+    ) -> PQEvent:
         """Construct a :class:`PQEvent` from a :class:`PQResult`."""
         return cls(
             label=result.label,

@@ -26,9 +26,10 @@ async def get_soc() -> SoCResponse:
     updated_at = _LAST_UPDATED
 
     try:
+        from sqlalchemy import select
+
         from gridsense.db.connection import create_db_engine
         from gridsense.db.models import BatterySoC
-        from sqlalchemy import select
 
         engine = create_db_engine()
         with engine.connect() as conn:
