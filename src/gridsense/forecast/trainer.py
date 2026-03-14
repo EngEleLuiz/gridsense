@@ -125,7 +125,10 @@ def train_and_save(
         The trained forecaster (already saved to ``model_path``).
     """
     if df is None:
-        logger.info("No training data provided — generating %d days of synthetic data.", n_days)
+        logger.info(
+            "No training data provided — generating %d days of synthetic data.",
+            n_days,
+        )
         df = generate_training_data(n_days=n_days, seed=seed)
 
     logger.info("Training SolarForecaster on %d rows.", len(df))

@@ -103,7 +103,9 @@ class TestCoulombCounting:
     def test_half_charge_discharged(self) -> None:
         """Discharging half capacity should land near 0.5."""
         cap_ah = 20.0
-        est = SoCEstimator(capacity_ah=cap_ah, initial_soc=1.0, coulombic_efficiency=1.0)
+        est = SoCEstimator(
+            capacity_ah=cap_ah, initial_soc=1.0, coulombic_efficiency=1.0
+        )
         # Discharge 10 Ah at 1 A → 10 hours = 36000 s
         est.update(current_a=-1.0, dt_seconds=36_000.0)
         assert est.soc == pytest.approx(0.5, abs=0.01)

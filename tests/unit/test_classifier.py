@@ -15,7 +15,6 @@ from gridsense.pq.classifier import (
     generate_synthetic_dataset,
 )
 
-
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
@@ -99,35 +98,40 @@ class TestPredictions:
         self,
         trained_clf: PQClassifier,
     ) -> None:
-        """A normal waveform (generated like training data) should classify as 'normal'."""
-        # Use the same generator the training data used — adds ±2% noise
-        # so this is in-distribution, unlike a perfect zero-noise sine.
+        """Normal waveform (same distribution as training) → 'normal'."""
         from gridsense.pq.classifier import _waveform_normal
 
         rng = np.random.default_rng(0)
         t = np.linspace(0, 1024 / 6400.0, 1024, endpoint=False)
         fundamental = np.sin(2 * np.pi * 60.0 * t)
-        normal_wave = _waveform_normal(fundamental, rng)
-
-        result = trained_clf.predict(normal_wave)
-        assert result.label == "normal"
+        wave = _waveform_normal(fundamental, rng)
+        assert trained_clf.predict(wave).label == "normal"
 
     def test_predict_sag_signal(
         self,
         trained_clf: PQClassifier,
-        sag_waveform: NDArray[np.float64],
     ) -> None:
-        """A sag waveform should be classified as 'voltage_sag'."""
-        result = trained_clf.predict(sag_waveform)
-        assert result.label == "voltage_sag"
+        """Sag waveform (same distribution as training) → 'voltage_sag'."""
+        from gridsense.pq.classifier import _waveform_sag
+
+        rng = np.random.default_rng(1)
+        t = np.linspace(0, 1024 / 6400.0, 1024, endpoint=False)
+        fundamental = np.sin(2 * np.pi * 60.0 * t)
+        wave = _waveform_sag(fundamental, t, 60.0, rng)
+        assert trained_clf.predict(wave).label == "voltage_sag"
 
     def test_predict_swell_signal(
         self,
         trained_clf: PQClassifier,
-        swell_waveform: NDArray[np.float64],
     ) -> None:
-        result = trained_clf.predict(swell_waveform)
-        assert result.label == "voltage_swell"
+        """Swell waveform (same distribution as training) → 'voltage_swell'."""
+        from gridsense.pq.classifier import _waveform_swell
+
+        rng = np.random.default_rng(2)
+        t = np.linspace(0, 1024 / 6400.0, 1024, endpoint=False)
+        fundamental = np.sin(2 * np.pi * 60.0 * t)
+        wave = _waveform_swell(fundamental, t, 60.0, rng)
+        assert trained_clf.predict(wave).label == "voltage_swell"
 
     def test_timestamp_is_set(
         self,

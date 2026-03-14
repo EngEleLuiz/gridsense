@@ -41,7 +41,11 @@ def conditions_df(synthetic_df: pd.DataFrame) -> pd.DataFrame:
 class TestFeatureEngineering:
     def test_engineer_adds_expected_columns(self, synthetic_df: pd.DataFrame) -> None:
         df = engineer_features(synthetic_df.head(10).copy())
-        for col in ["hour_sin", "hour_cos", "doy_sin", "doy_cos", "lag1_kw", "lag2_kw", "lag3_kw"]:
+        expected = [
+            "hour_sin", "hour_cos", "doy_sin", "doy_cos",
+            "lag1_kw", "lag2_kw", "lag3_kw",
+        ]
+        for col in expected:
             assert col in df.columns, f"Missing: {col}"
 
     def test_hour_sin_cos_range(self, synthetic_df: pd.DataFrame) -> None:
@@ -109,7 +113,8 @@ class TestPredictions:
         conditions_df: pd.DataFrame,
     ) -> None:
         result = trained_forecaster.predict_next_24h(conditions_df)
-        assert set(result.columns) >= {"timestamp", "predicted_kw", "lower_bound", "upper_bound"}
+        expected = {"timestamp", "predicted_kw", "lower_bound", "upper_bound"}
+        assert set(result.columns) >= expected
 
     def test_confidence_interval_valid(
         self,
@@ -136,7 +141,9 @@ class TestPredictions:
         """Rows with irradiance == 0 must produce predicted_kw == 0."""
         night_df = pd.DataFrame(
             {
-                "timestamp": pd.date_range("2025-01-01 20:00", periods=24, freq="h", tz="UTC"),
+                "timestamp": pd.date_range(
+                    "2025-01-01 20:00", periods=24, freq="h", tz="UTC"
+                ),
                 "irradiance_wm2": [0.0] * 24,
                 "temp_c": [18.0] * 24,
                 "humidity_pct": [70.0] * 24,

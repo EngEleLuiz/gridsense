@@ -81,7 +81,8 @@ async def test_predict_solar_prediction_fields(client: AsyncClient) -> None:
         json={"station_code": "A801", "horizon_hours": 24},
     )
     item = resp.json()["predictions"][0]
-    assert set(item.keys()) >= {"timestamp", "predicted_kw", "lower_bound", "upper_bound"}
+    expected = {"timestamp", "predicted_kw", "lower_bound", "upper_bound"}
+    assert set(item.keys()) >= expected
 
 
 @pytest.mark.asyncio

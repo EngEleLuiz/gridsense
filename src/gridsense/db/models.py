@@ -78,7 +78,9 @@ class SolarForecast(Base):
     forecast_time: datetime = Column(
         TIMESTAMP(timezone=True), primary_key=True, nullable=False
     )
-    generated_at: datetime = Column(TIMESTAMP(timezone=True), primary_key=True, nullable=False)
+    generated_at: datetime = Column(
+        TIMESTAMP(timezone=True), primary_key=True, nullable=False
+    )
     predicted_kw: float | None = Column(Double)
     lower_bound: float | None = Column(Double)
     upper_bound: float | None = Column(Double)

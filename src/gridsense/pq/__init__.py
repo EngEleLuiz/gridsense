@@ -1,1 +1,1 @@
-"""Power Quality (PQ) analysis: feature extraction, classification, and event management."""
+"""Power Quality (PQ): feature extraction, classification, event management."""

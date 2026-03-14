@@ -144,7 +144,9 @@ class ModbusReader:
         RuntimeError
             If a Modbus register read returns an error response.
         """
-        client = self._client_cls(host=self._host, port=self._port, timeout=self._timeout)
+        client = self._client_cls(
+            host=self._host, port=self._port, timeout=self._timeout
+        )
 
         if not client.connect():
             raise ConnectionError(
@@ -153,9 +155,15 @@ class ModbusReader:
             )
 
         try:
-            power_w = self._read_register(client, self._map.power_register, self._map.power_scale)
-            voltage_v = self._read_register(client, self._map.voltage_register, self._map.voltage_scale)
-            current_a = self._read_register(client, self._map.current_register, self._map.current_scale)
+            power_w = self._read_register(
+                client, self._map.power_register, self._map.power_scale
+            )
+            voltage_v = self._read_register(
+                client, self._map.voltage_register, self._map.voltage_scale
+            )
+            current_a = self._read_register(
+                client, self._map.current_register, self._map.current_scale
+            )
         finally:
             client.close()
 
@@ -178,7 +186,9 @@ class ModbusReader:
         scale: float,
     ) -> float:
         """Read a single holding register and apply the scale factor."""
-        response = client.read_holding_registers(address=address, count=1, slave=self._unit_id)
+        response = client.read_holding_registers(
+            address=address, count=1, slave=self._unit_id
+        )
 
         if response.isError():
             raise RuntimeError(

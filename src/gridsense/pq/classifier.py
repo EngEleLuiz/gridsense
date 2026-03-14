@@ -159,7 +159,9 @@ class PQClassifier:
             raise RuntimeError(
                 "Model has not been trained. Call .train() or .load() first."
             )
-        features = extract_dwt_features(waveform, wavelet=self.wavelet, level=self.level)
+        features = extract_dwt_features(
+            waveform, wavelet=self.wavelet, level=self.level
+        )
         X = features.reshape(1, -1)
 
         label_idx: int = int(self._pipeline.predict(X)[0])

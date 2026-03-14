@@ -46,3 +46,9 @@ reports/
 # OS
 .DS_Store
 Thumbs.db
+
+# Fly.io
+.fly/
+
+# Streamlit secrets
+.streamlit/secrets.toml

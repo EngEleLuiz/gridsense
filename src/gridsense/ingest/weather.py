@@ -160,8 +160,8 @@ class INMETClient:
         if not body:
             raise ValueError(
                 f"INMET API returned an empty response for station "
-                f"{self.station_code} on {start}. "
-                f"The API may be temporarily unavailable or the station code is invalid."
+                f"{self.station_code} on {start}. The API may be temporarily "
+                f"unavailable or the station code is invalid."
             )
 
         try:
@@ -211,7 +211,9 @@ class INMETClient:
             hour_str: str = str(record["HR_MEDICAO"]).zfill(4)  # "1400" → "1400"
             hour_int = int(hour_str[:2])
 
-            ts = datetime.strptime(f"{date_str} {hour_int:02d}:00:00", "%Y-%m-%d %H:%M:%S")
+            ts = datetime.strptime(
+                f"{date_str} {hour_int:02d}:00:00", "%Y-%m-%d %H:%M:%S"
+            )
             ts = ts.replace(tzinfo=timezone.utc)
 
             def _float(key: str) -> float | None:

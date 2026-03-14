@@ -23,7 +23,8 @@ class TestInverterReading:
             current_a=4.35,
         )
         d = reading.to_dict()
-        assert set(d.keys()) == {"timestamp", "station_id", "power_w", "voltage_v", "current_a"}
+        expected = {"timestamp", "station_id", "power_w", "voltage_v", "current_a"}
+        assert set(d.keys()) == expected
 
     def test_to_dict_values(self) -> None:
         reading = InverterReading(
@@ -54,7 +55,9 @@ class TestModbusReader:
         """read() must return an InverterReading with all fields set."""
         mock_client = MagicMock()
         mock_client.connect.return_value = True
-        mock_client.read_holding_registers.return_value = self._make_mock_response(10000)
+        mock_client.read_holding_registers.return_value = (
+            self._make_mock_response(10000)
+        )
 
         reader = ModbusReader.__new__(ModbusReader)
         reader._host = "localhost"
@@ -94,7 +97,7 @@ class TestModbusReader:
         assert reading.power_w == pytest.approx(100.0)
 
     def test_read_raises_on_connection_error(self) -> None:
-        """ConnectionError must be raised with a helpful message when connect() fails."""
+        """ConnectionError raised with helpful message when connect() fails."""
         mock_client = MagicMock()
         mock_client.connect.return_value = False  # <-- connection failure
 

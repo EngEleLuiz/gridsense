@@ -69,7 +69,8 @@ class TestINMETClientFetch:
     def test_fetch_column_names(self) -> None:
         client = INMETClient(station_code="A801", session=_mock_session(INMET_FIXTURE))
         df = client.fetch(date="2025-12-01")
-        assert set(df.columns) >= {"timestamp", "irradiance_wm2", "temp_c", "humidity_pct"}
+        expected = {"timestamp", "irradiance_wm2", "temp_c", "humidity_pct"}
+        assert set(df.columns) >= expected
 
     def test_fetch_irradiance_conversion(self) -> None:
         """2160 kJ/m²/h should convert to 600 W/m²."""

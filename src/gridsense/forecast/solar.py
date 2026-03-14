@@ -225,7 +225,9 @@ class SolarForecaster:
             If called before :meth:`train` or :meth:`load`.
         """
         if not self._trained:
-            raise RuntimeError("Model has not been trained. Call .train() or .load() first.")
+            raise RuntimeError(
+                "Model has not been trained. Call .train() or .load() first."
+            )
 
         df = engineer_features(conditions.copy())
 
