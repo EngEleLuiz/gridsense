@@ -1,0 +1,85 @@
+version: "3.9"
+
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    environment:
+      POSTGRES_USER: gridsense
+      POSTGRES_PASSWORD: gridsense
+      POSTGRES_DB: gridsense
+    ports:
+      - "5433:5432"
+    volumes:
+      - tsdb_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gridsense"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://gridsense:gridsense@timescaledb:5432/gridsense
+    depends_on:
+      timescaledb:
+        condition: service_healthy
+    volumes:
+      - ./artifacts:/app/artifacts
+
+  prefect-server:
+    image: prefecthq/prefect:3-latest
+    command: prefect server start --host 0.0.0.0
+    ports:
+      - "4200:4200"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4200/api/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  pipeline:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.pipeline
+    environment:
+      DATABASE_URL: postgresql://gridsense:gridsense@timescaledb:5432/gridsense
+      PREFECT_API_URL: http://prefect-server:4200/api
+    depends_on:
+      timescaledb:
+        condition: service_healthy
+      prefect-server:
+        condition: service_healthy
+    volumes:
+      - ./artifacts:/app/artifacts
+    # Keep container alive so you can exec into it and run pipelines manually:
+    #   docker exec gridsense-pipeline-1 python -m pipelines.ingest_flow
+    #   docker exec gridsense-pipeline-1 python -m pipelines.forecast_flow
+    command: >
+      sh -c "
+        echo 'Pipeline container ready. Waiting for Prefect...' &&
+        sleep 15 &&
+        echo 'Running initial ingest...' &&
+        python -m pipelines.ingest_flow &&
+        echo 'Pipeline container staying alive for manual triggers.' &&
+        tail -f /dev/null
+      "
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      API_URL: http://api:8000
+    depends_on:
+      - api
+
+volumes:
+  tsdb_data:
