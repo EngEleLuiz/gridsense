@@ -23,7 +23,7 @@ git init
 git add .
 git commit -m "feat: initial GridSense release v0.1.0"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/gridsense.git
+git remote add origin https://github.com/EngEleLuiz/gridsense.git
 git push -u origin main
 ```
 
@@ -46,11 +46,11 @@ After pushing, go to your repo on GitHub:
 
 ### 1.5 Update badge URLs in README.md
 
-Replace `YOUR_USERNAME` in README.md with your actual GitHub username:
+Replace `EngEleLuiz` in README.md with your actual GitHub username:
 
 ```bash
 # On Windows — find and replace in your editor (VS Code: Ctrl+H)
-# Replace: YOUR_USERNAME
+# Replace: EngEleLuiz
 # With:    your-actual-github-username
 ```
 
@@ -142,7 +142,7 @@ We already have this handled via `packages.txt` and `requirements.txt` (see file
 ### 3.3 Deploy
 
 1. Click **New app**
-2. Repository: `YOUR_USERNAME/gridsense`
+2. Repository: `EngEleLuiz/gridsense`
 3. Branch: `main`
 4. Main file path: `dashboard/app.py`
 5. Click **Advanced settings**:
@@ -150,12 +150,12 @@ We already have this handled via `packages.txt` and `requirements.txt` (see file
 6. Click **Deploy**
 
 Streamlit Cloud will install dependencies and launch your app.
-Your public URL will be: `https://YOUR_USERNAME-gridsense-dashboard-app-XXXXX.streamlit.app`
+Your public URL will be: `https://EngEleLuiz-gridsense-dashboard-app-XXXXX.streamlit.app`
 
 ### 3.4 Update README with the live URL
 
 ```markdown
-**Live dashboard →** [your-app.streamlit.app](https://your-app.streamlit.app)
+**Live dashboard →** [gridsense-amsos7nx5pgdmh95quzm68.streamlit.app](https://gridsense-amsos7nx5pgdmh95quzm68.streamlit.app)
 ```
 
 ---

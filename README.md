@@ -3,15 +3,15 @@
 > End-to-end platform for real-time solar generation forecasting and power
 > quality monitoring — from raw inverter data to live public dashboard.
 
-[![CI](https://github.com/YOUR_USERNAME/gridsense/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/gridsense/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/YOUR_USERNAME/gridsense/branch/main/graph/badge.svg)](https://codecov.io/gh/YOUR_USERNAME/gridsense)
+[![CI](https://github.com/EngEleLuiz/gridsense/actions/workflows/ci.yml/badge.svg)](https://github.com/EngEleLuiz/gridsense/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/EngEleLuiz/gridsense/branch/main/graph/badge.svg)](https://codecov.io/gh/EngEleLuiz/gridsense)
 [![PyPI](https://img.shields.io/pypi/v/gridsense)](https://pypi.org/project/gridsense/)
 [![Python](https://img.shields.io/pypi/pyversions/gridsense)](https://pypi.org/project/gridsense/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-**Live dashboard →** _[your-app.streamlit.app](https://your-app.streamlit.app)_
+**Live dashboard →** [gridsense.streamlit.app](https://gridsense-amsos7nx5pgdmh95quzm68.streamlit.app/)
 &nbsp;|&nbsp;
-**API docs →** _[your-api.fly.dev/docs](https://your-api.fly.dev/docs)_
+**PyPI →** [pypi.org/project/gridsense](https://pypi.org/project/gridsense/)
 
 ---
 
@@ -118,7 +118,7 @@ pip install gridsense
 ### Run the full stack locally (Docker)
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/gridsense.git
+git clone https://github.com/EngEleLuiz/gridsense.git
 cd gridsense
 docker-compose up --build
 ```
@@ -128,12 +128,12 @@ docker-compose up --build
 | FastAPI | http://localhost:8000/docs |
 | Streamlit | http://localhost:8501 |
 | Prefect UI | http://localhost:4200 |
-| TimescaleDB | localhost:5432 |
+| TimescaleDB | localhost:5433 |
 
 ### Development install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/gridsense.git
+git clone https://github.com/EngEleLuiz/gridsense.git
 cd gridsense
 pip install -e ".[dev,dashboard]"
 make test-unit
@@ -154,14 +154,14 @@ gridsense/
 │   ├── db/           # TimescaleDB connection + SQLAlchemy ORM models
 │   └── api/          # FastAPI app, routers, Pydantic schemas
 ├── pipelines/        # Prefect flows: ingest, forecast, retrain
-├── dashboard/        # Streamlit app
+├── dashboard/        # Streamlit app (live at streamlit.app)
 ├── tests/
-│   ├── unit/         # ~80 tests, no external deps
+│   ├── unit/         # 102 tests, no external deps
 │   └── integration/  # FastAPI ASGI tests
 ├── docker/           # Dockerfiles for api, pipeline, dashboard
 ├── docker-compose.yml
 ├── pyproject.toml
-├── Makefile          # make test-all · make release · make docker-up
+├── Makefile
 └── TESTING.md        # Step-by-step testing guide
 ```
 
@@ -181,7 +181,7 @@ gridsense/
 
 - [x] Phase 1 — Testable core (PQ + Battery modules, CI)
 - [x] Phase 2 — Data & orchestration (DB, ingest, forecast, Prefect)
-- [x] Phase 3 — API, dashboard, open source release
+- [x] Phase 3 — API, dashboard, open source release (`pip install gridsense`)
 - [ ] Phase 4 — Live data from INMET A801, real model metrics
 - [ ] Phase 5 — Kalman Filter SoC estimator
 - [ ] Phase 6 — MQTT ingestion for real Modbus inverters
@@ -191,7 +191,7 @@ gridsense/
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) and
-[good first issues](https://github.com/YOUR_USERNAME/gridsense/issues?q=label%3A%22good+first+issue%22).
+[good first issues](https://github.com/EngEleLuiz/gridsense/issues?q=label%3A%22good+first+issue%22).
 
 ---
 

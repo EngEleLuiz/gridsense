@@ -45,7 +45,7 @@ You can help in several ways:
 ### 1. Fork and clone
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/gridsense.git
+git clone https://github.com/EngEleLuiz/gridsense.git
 cd gridsense
 ```
 
@@ -155,7 +155,7 @@ CI will run automatically. A maintainer will review within a few days.
 ## Good First Issues
 
 Look for issues labelled
-[`good first issue`](https://github.com/YOUR_USERNAME/gridsense/issues?q=label%3A%22good+first+issue%22)
+[`good first issue`](https://github.com/EngEleLuiz/gridsense/issues?q=label%3A%22good+first+issue%22)
 on the issue tracker. Good starting points:
 
 - Adding more synthetic waveform types (notch, flicker, DC offset) to
@@ -210,5 +210,5 @@ result = clf.predict(np.sin(2 * np.pi * 60 * np.linspace(0, 1, 1024)))
 
 ## Questions?
 
-Open a [GitHub Discussion](https://github.com/YOUR_USERNAME/gridsense/discussions)
+Open a [GitHub Discussion](https://github.com/EngEleLuiz/gridsense/discussions)
 or file an issue. We're happy to help.
