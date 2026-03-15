@@ -75,7 +75,7 @@ async def healthz() -> HealthResponse:
 
 
 @app.get("/", include_in_schema=False)
-async def root() -> dict:
+async def root() -> dict[str, str]:
     return {
         "message": "GridSense API is running.",
         "docs": "/docs",

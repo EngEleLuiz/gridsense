@@ -20,7 +20,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import ClassVar
+from typing import Any, ClassVar
 
 import joblib
 import numpy as np
@@ -30,6 +30,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 from gridsense.pq.features import DEFAULT_LEVEL, DEFAULT_WAVELET, extract_dwt_features
+
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -137,7 +138,7 @@ class PQClassifier:
     # Public API
     # ------------------------------------------------------------------
 
-    def predict(self, waveform: NDArray[np.floating]) -> PQResult:
+    def predict(self, waveform: NDArray[np.float64]) -> PQResult:
         """Classify a single voltage waveform.
 
         Parameters
@@ -165,7 +166,7 @@ class PQClassifier:
         X = features.reshape(1, -1)
 
         label_idx: int = int(self._pipeline.predict(X)[0])
-        proba: NDArray[np.floating] = self._pipeline.predict_proba(X)[0]
+        proba: NDArray[np.float64] = self._pipeline.predict_proba(X)[0]
         confidence = float(np.clip(proba[label_idx], 0.0, 1.0))
         label = self.CLASSES[label_idx]
 
@@ -173,7 +174,7 @@ class PQClassifier:
 
     def train(
         self,
-        X: NDArray[np.floating],
+        X: NDArray[np.float64],
         y: NDArray[np.intp],
     ) -> None:
         """Fit the pipeline on pre-extracted feature matrix ``X`` and labels ``y``.
@@ -242,7 +243,7 @@ class PQClassifier:
                 f"Model artifact not found at '{path}'. "
                 "Run the training pipeline first, or pass the correct path."
             )
-        payload: dict = joblib.load(path)
+        payload: dict[str, Any] = joblib.load(path)
         instance = cls(wavelet=payload["wavelet"], level=payload["level"])
         instance._pipeline = payload["pipeline"]
         instance._trained = True
@@ -259,7 +260,7 @@ def generate_synthetic_dataset(
     samples: int = 1024,
     fs: float = 6400.0,
     seed: int = 0,
-) -> tuple[NDArray[np.floating], NDArray[np.intp]]:
+) -> tuple[NDArray[np.float64], NDArray[np.intp]]:
     """Generate a balanced synthetic PQ dataset for training / testing.
 
     Each waveform is a 60 Hz fundamental with class-specific disturbances
@@ -297,7 +298,7 @@ def generate_synthetic_dataset(
         lambda: _waveform_transient(fundamental, t, rng),
     ]
 
-    X_list: list[NDArray[np.floating]] = []
+    X_list: list[NDArray[np.float64]] = []
     y_list: list[int] = []
 
     for class_idx, gen in enumerate(generators):
@@ -321,19 +322,19 @@ def generate_synthetic_dataset(
 
 
 def _waveform_normal(
-    fundamental: NDArray[np.floating],
+    fundamental: NDArray[np.float64],
     rng: np.random.Generator,
-) -> NDArray[np.floating]:
+) -> NDArray[np.float64]:
     noise = rng.normal(0, 0.02, fundamental.shape)
     return fundamental + noise
 
 
 def _waveform_sag(
-    fundamental: NDArray[np.floating],
-    t: NDArray[np.floating],
+    fundamental: NDArray[np.float64],
+    t: NDArray[np.float64],
     f0: float,
     rng: np.random.Generator,
-) -> NDArray[np.floating]:
+) -> NDArray[np.float64]:
     wave = fundamental.copy()
     signal_len = t[-1]
     depth = rng.uniform(0.1, 0.5)          # sag to 50–90 % of nominal
@@ -346,11 +347,11 @@ def _waveform_sag(
 
 
 def _waveform_swell(
-    fundamental: NDArray[np.floating],
-    t: NDArray[np.floating],
+    fundamental: NDArray[np.float64],
+    t: NDArray[np.float64],
     f0: float,
     rng: np.random.Generator,
-) -> NDArray[np.floating]:
+) -> NDArray[np.float64]:
     wave = fundamental.copy()
     signal_len = t[-1]
     boost = rng.uniform(0.1, 0.4)          # swell to 110–140 % of nominal
@@ -363,11 +364,11 @@ def _waveform_swell(
 
 
 def _waveform_interruption(
-    fundamental: NDArray[np.floating],
-    t: NDArray[np.floating],
+    fundamental: NDArray[np.float64],
+    t: NDArray[np.float64],
     f0: float,
     rng: np.random.Generator,
-) -> NDArray[np.floating]:
+) -> NDArray[np.float64]:
     wave = fundamental.copy()
     signal_len = t[-1]
     max_duration = signal_len * 0.4
@@ -379,10 +380,10 @@ def _waveform_interruption(
 
 
 def _waveform_harmonics(
-    t: NDArray[np.floating],
+    t: NDArray[np.float64],
     f0: float,
     rng: np.random.Generator,
-) -> NDArray[np.floating]:
+) -> NDArray[np.float64]:
     h3 = rng.uniform(0.05, 0.20) * np.sin(2 * np.pi * 3 * f0 * t)
     h5 = rng.uniform(0.05, 0.15) * np.sin(2 * np.pi * 5 * f0 * t)
     h7 = rng.uniform(0.01, 0.08) * np.sin(2 * np.pi * 7 * f0 * t)
@@ -390,10 +391,10 @@ def _waveform_harmonics(
 
 
 def _waveform_transient(
-    fundamental: NDArray[np.floating],
-    t: NDArray[np.floating],
+    fundamental: NDArray[np.float64],
+    t: NDArray[np.float64],
     rng: np.random.Generator,
-) -> NDArray[np.floating]:
+) -> NDArray[np.float64]:
     wave = fundamental.copy()
     idx = rng.integers(len(t) // 4, 3 * len(t) // 4)
     width = rng.integers(2, 8)

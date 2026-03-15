@@ -189,7 +189,7 @@ class SolarForecaster:
         self._pipeline.fit(X, y)
 
         # Estimate residual std for confidence intervals
-        y_hat: NDArray[np.floating] = self._pipeline.predict(X)
+        y_hat: NDArray[np.float64] = self._pipeline.predict(X)
         self._residual_std = float(np.std(y - y_hat))
         self._trained = True
         logger.info(
@@ -247,7 +247,7 @@ class SolarForecaster:
 
         df = engineer_features(df)
         X = df[FEATURE_COLS].values
-        predictions: NDArray[np.floating] = self._pipeline.predict(X)
+        predictions: NDArray[np.float64] = self._pipeline.predict(X)
 
         # Night-time clamp: irradiance == 0 → force prediction to 0
         night_mask = df["irradiance_wm2"].values <= 0
@@ -304,7 +304,7 @@ class SolarForecaster:
         logger.info("Model saved to %s", path)
 
     @classmethod
-    def load(cls, path: Path = DEFAULT_MODEL_PATH) -> SolarForecaster:
+    def load(cls, path: Path = DEFAULT_MODEL_PATH) -> "SolarForecaster":
         """Load a pre-trained model from a joblib artifact.
 
         Raises
@@ -318,7 +318,7 @@ class SolarForecaster:
                 f"Solar model artifact not found at '{path}'. "
                 "Run the training pipeline first."
             )
-        payload: dict = joblib.load(path)
+        payload: dict[str, Any] = joblib.load(path)
         instance = cls(confidence_std_multiplier=payload.get("std_mult", 1.0))
         instance._pipeline = payload["pipeline"]
         instance._residual_std = payload.get("residual_std", 0.0)

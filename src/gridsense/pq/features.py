@@ -15,8 +15,9 @@ IEEE 1159-2019 reference disturbances supported:
 from __future__ import annotations
 
 import numpy as np
-import pywt
 from numpy.typing import NDArray
+import pywt
+
 
 # ---------------------------------------------------------------------------
 # Public constants
@@ -38,10 +39,10 @@ MIN_WAVEFORM_LENGTH: int = 64
 
 
 def extract_dwt_features(
-    waveform: NDArray[np.floating],
+    waveform: NDArray[np.float64],
     wavelet: str = DEFAULT_WAVELET,
     level: int = DEFAULT_LEVEL,
-) -> NDArray[np.floating]:
+) -> NDArray[np.float64]:
     """Extract a fixed-size feature vector from a voltage waveform via DWT.
 
     The waveform is decomposed into ``level`` detail bands plus one
@@ -68,7 +69,7 @@ def extract_dwt_features(
 
     Returns
     -------
-    NDArray[np.floating]
+    NDArray[np.float64]
         1-D feature vector of shape ``((level + 1) * 5,)``.
 
     Raises
@@ -111,7 +112,7 @@ def extract_dwt_features(
 # ---------------------------------------------------------------------------
 
 
-def _band_stats(band: NDArray[np.floating]) -> list[float]:
+def _band_stats(band: NDArray[np.float64]) -> list[float]:
     """Return [rms, mean_abs, std, max_abs, entropy] for one DWT sub-band."""
     band = np.asarray(band, dtype=np.float64)
 
@@ -124,7 +125,7 @@ def _band_stats(band: NDArray[np.floating]) -> list[float]:
     return [rms, mean_abs, std, max_abs, entropy]
 
 
-def _shannon_entropy(band: NDArray[np.floating]) -> float:
+def _shannon_entropy(band: NDArray[np.float64]) -> float:
     """Normalised Shannon entropy of the squared DWT coefficients."""
     energy = band ** 2
     total = float(np.sum(energy))
