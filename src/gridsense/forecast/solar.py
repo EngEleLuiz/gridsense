@@ -304,7 +304,7 @@ class SolarForecaster:
         logger.info("Model saved to %s", path)
 
     @classmethod
-    def load(cls, path: Path = DEFAULT_MODEL_PATH) -> "SolarForecaster":
+    def load(cls, path: Path = DEFAULT_MODEL_PATH) -> SolarForecaster:
         """Load a pre-trained model from a joblib artifact.
 
         Raises

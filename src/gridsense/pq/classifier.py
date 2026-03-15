@@ -31,7 +31,6 @@ from sklearn.preprocessing import StandardScaler
 
 from gridsense.pq.features import DEFAULT_LEVEL, DEFAULT_WAVELET, extract_dwt_features
 
-
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------

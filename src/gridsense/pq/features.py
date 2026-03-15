@@ -15,9 +15,8 @@ IEEE 1159-2019 reference disturbances supported:
 from __future__ import annotations
 
 import numpy as np
-from numpy.typing import NDArray
 import pywt
-
+from numpy.typing import NDArray
 
 # ---------------------------------------------------------------------------
 # Public constants

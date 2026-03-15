@@ -92,6 +92,7 @@ disable_error_code = [
     "no-untyped-call",  # calls into untyped pymodbus / SQLAlchemy internals
     "assignment",       # SQLAlchemy Column() ORM attribute assignments
     "arg-type",         # SQLAlchemy where() / order_by() expression args
+    "attr-defined",     # SQLAlchemy ORM column methods (desc, asc, etc.)
     "import-untyped",   # requests, evidently, scipy without stubs
     "no-any-return",    # numpy waveform generators returning Any
 ]
